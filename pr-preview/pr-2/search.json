@@ -2,37 +2,44 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "Quarto Website Template",
+    "title": "Working with AI",
     "section": "",
-    "text": "This site collects the UCD-SERG lab’s notes on working responsibly and effectively with AI coding assistants: what they are, how to use them, and the policies lab members follow when using them. It was migrated out of the UCD-SERG Lab Manual’s “Working with AI” chapter, which had grown large enough to deserve a dedicated site. For the lab’s broader coding, reproducibility, and collaboration conventions, see the lab manual itself.\n\n\n\n\n\n\nWarningTechnology in Rapid Evolution\n\n\n\nAs of early 2026, AI coding assistant technology is changing extremely rapidly, and we are just beginning to figure out how to use these tools effectively ourselves. All information on this site should be taken with extra caution, as best practices and capabilities continue to evolve.\n\n\n\n\n\nPolicies for Using AI: responsibility for validation, disclosure, attribution, and using AI for journal articles\nCoding Agents: what language models, coding agents, and harnesses are; how to work with them; benefits, hazards, and best practices; and configuring your environment\nPull-Request Workflow with Agents: filing issues, claiming work, and driving a pull request to a clean, mergeable state\n\nThe notes are available in multiple formats:\n\nHTML Website: Navigate using the navbar for easy access to all pages\nRevealJS Slides: Each chapter can generate a presentation format with -slides.html suffix\nPDF Handouts: Each chapter can generate a PDF handout with -handout.pdf suffix\nDOCX Documents: Each chapter can generate a Microsoft Word document with .docx extension\n\n\n\n\nThis website is built with Quarto, an open-source scientific and technical publishing system, from the UCD-SERG qwt (Quarto Website Template).\n\n\n\nTo render the website locally:\nquarto render\nTo preview the website with live reload:\nquarto preview\nThe rendered output will be in the _site/ directory, which is published to GitHub Pages.\n\n\n\nSee LICENSE."
+    "text": "This site collects the UCD-SERG lab’s notes on working responsibly and effectively with AI coding assistants: what they are, how to use them, and the policies lab members follow when using them. It was migrated out of the UCD-SERG Lab Manual’s “Working with AI” chapter, which had grown large enough to deserve a dedicated site. For the lab’s broader coding, reproducibility, and collaboration conventions, see the lab manual itself."
   },
   {
     "objectID": "index.html#chapters",
     "href": "index.html#chapters",
-    "title": "Quarto Website Template",
-    "section": "",
-    "text": "Policies for Using AI: responsibility for validation, disclosure, attribution, and using AI for journal articles\nCoding Agents: what language models, coding agents, and harnesses are; how to work with them; benefits, hazards, and best practices; and configuring your environment\nPull-Request Workflow with Agents: filing issues, claiming work, and driving a pull request to a clean, mergeable state\n\nThe notes are available in multiple formats:\n\nHTML Website: Navigate using the navbar for easy access to all pages\nRevealJS Slides: Each chapter can generate a presentation format with -slides.html suffix\nPDF Handouts: Each chapter can generate a PDF handout with -handout.pdf suffix\nDOCX Documents: Each chapter can generate a Microsoft Word document with .docx extension"
+    "title": "Working with AI",
+    "section": "1 Chapters",
+    "text": "1 Chapters\n\nPolicies for Using AI: responsibility for validation, disclosure, attribution, and using AI for journal articles\nCoding Agents: what language models, coding agents, and harnesses are; how to work with them; benefits, hazards, and best practices; and configuring your environment\nPull-Request Workflow with Agents: filing issues, claiming work, and driving a pull request to a clean, mergeable state\n\nThe notes are available in multiple formats:\n\nHTML Website: Navigate using the navbar for easy access to all pages\nRevealJS Slides: Each chapter can generate a presentation format with -slides.html suffix\nPDF Handouts: Each chapter can generate a PDF handout with -handout.pdf suffix\nDOCX Documents: Each chapter can generate a Microsoft Word document with .docx extension"
   },
   {
     "objectID": "index.html#about-this-website",
     "href": "index.html#about-this-website",
-    "title": "Quarto Website Template",
-    "section": "",
-    "text": "This website is built with Quarto, an open-source scientific and technical publishing system, from the UCD-SERG qwt (Quarto Website Template)."
+    "title": "Working with AI",
+    "section": "2 About this website",
+    "text": "2 About this website\nThis website is built with Quarto, an open-source scientific and technical publishing system, from the UCD-SERG qwt (Quarto Website Template)."
   },
   {
     "objectID": "index.html#building-the-website",
     "href": "index.html#building-the-website",
-    "title": "Quarto Website Template",
-    "section": "",
-    "text": "To render the website locally:\nquarto render\nTo preview the website with live reload:\nquarto preview\nThe rendered output will be in the _site/ directory, which is published to GitHub Pages."
+    "title": "Working with AI",
+    "section": "3 Building the website",
+    "text": "3 Building the website\nTo render the website locally:\nquarto render\nTo preview the website with live reload:\nquarto preview\nThe rendered output will be in the _site/ directory, which is published to GitHub Pages."
   },
   {
     "objectID": "index.html#license",
     "href": "index.html#license",
-    "title": "Quarto Website Template",
-    "section": "",
-    "text": "See LICENSE."
+    "title": "Working with AI",
+    "section": "4 License",
+    "text": "4 License\nSee LICENSE."
+  },
+  {
+    "objectID": "index.html#references",
+    "href": "index.html#references",
+    "title": "Working with AI",
+    "section": "References",
+    "text": "References"
   },
   {
     "objectID": "chapters/coding-agents.html",

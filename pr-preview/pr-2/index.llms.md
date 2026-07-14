@@ -1,12 +1,10 @@
-# Quarto Website Template
+# Working with AI
 
 Code
 
 Published
 
-Last modified: 2026-07-14 10:07:18 (PDT)
-
-# Working with AI
+Last modified: 2026-07-14 10:23:56 (PDT)
 
 This site collects the UCD-SERG lab’s notes on working responsibly and effectively with AI coding assistants: what they are, how to use them, and the policies lab members follow when using them. It was migrated out of the [UCD-SERG Lab Manual](https://ucd-serg.github.io/lab-manual/)’s “Working with AI” chapter, which had grown large enough to deserve a dedicated site. For the lab’s broader coding, reproducibility, and collaboration conventions, see the lab manual itself.
 
@@ -14,7 +12,7 @@ This site collects the UCD-SERG lab’s notes on working responsibly and effecti
 >
 > As of early 2026, AI coding assistant technology is changing extremely rapidly, and we are just beginning to figure out how to use these tools effectively ourselves. All information on this site should be taken with extra caution, as best practices and capabilities continue to evolve.
 
-## 0.1 Chapters
+## 1 Chapters
 
 - [**Policies for Using AI**](chapters/ai-use-policies.llms.md): responsibility for validation, disclosure, attribution, and using AI for journal articles
 - [**Coding Agents**](chapters/coding-agents.llms.md): what language models, coding agents, and harnesses are; how to work with them; benefits, hazards, and best practices; and configuring your environment
@@ -27,11 +25,11 @@ The notes are available in multiple formats:
 - **PDF Handouts**: Each chapter can generate a PDF handout with `-handout.pdf` suffix
 - **DOCX Documents**: Each chapter can generate a Microsoft Word document with `.docx` extension
 
-## 0.2 About this website
+## 2 About this website
 
 This website is built with [Quarto](https://quarto.org/), an open-source scientific and technical publishing system, from the [UCD-SERG `qwt` (Quarto Website Template)](https://github.com/UCD-SERG/qwt).
 
-## 0.3 Building the website
+## 3 Building the website
 
 To render the website locally:
 
@@ -47,7 +45,7 @@ quarto preview
 
 The rendered output will be in the `_site/` directory, which is published to GitHub Pages.
 
-## 0.4 License
+## 4 License
 
 See [`LICENSE`](https://github.com/d-morrison/wai/blob/main/LICENSE).
 
