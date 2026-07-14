@@ -1,0 +1,228 @@
+name: Quarto Preview
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - closed
+      - labeled
+      - unlabeled
+
+# Cancel an in-progress preview build when a newer event supersedes it on
+# the same ref — otherwise a fresh push queues behind the stale build and
+# the up-to-date preview is delayed until the obsolete one finishes (see
+# d-morrison/rme#812). `github.ref` is stable across a PR's events, so all
+# of a PR's preview runs share one group.
+concurrency:
+  group: preview-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-deploy:
+    if: |
+      (github.event.action != 'labeled' && github.event.action != 'unlabeled') ||
+      contains(fromJson('["revealjs","pdf","docx","no-preview-highlights","clear-freezer"]'), github.event.label.name)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    env:
+      TZ: America/Los_Angeles
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0  # Fetch full history for git diff
+
+      - name: Set up Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+        with:
+          tinytex: true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          packages: |
+            any::knitr
+            any::rmarkdown
+            any::tibble
+
+      - name: Set timezone to Pacific Time
+        run: echo "TZ=America/Los_Angeles" >> $GITHUB_ENV
+
+      - name: Restore Quarto freezer
+        if: ${{ !contains(github.event.pull_request.labels.*.name, 'clear-freezer') }}
+        id: quarto-freezer-cache
+        uses: actions/cache/restore@v6
+        with:
+          path: _freeze
+          key: ${{ runner.os }}-quarto-freezer-${{ github.event.pull_request.head.sha }}-${{ github.run_attempt }}
+          restore-keys: |
+            ${{ runner.os }}-quarto-freezer-${{ github.event.pull_request.head.sha }}-
+            ${{ runner.os }}-quarto-freezer-main-
+            ${{ runner.os }}-quarto-freezer-
+
+      # By default, clear the restored freezer only for pages whose own source
+      # or included subfiles changed in this PR, so those pages re-execute
+      # while everything else reuses its cached freeze. Quarto's `freeze: auto`
+      # only re-runs a page when its *own* file hash changes, so without this a
+      # page that pulls in a changed `{{< include >}}` subfile would render
+      # stale. Skipped when the 'clear-freezer' label is set, since that path
+      # already skips the restore above and rebuilds the whole freezer.
+      - name: Clear freezer for changed pages
+        if: ${{ !contains(github.event.pull_request.labels.*.name, 'clear-freezer') }}
+        run: python3 .github/scripts/clear-changed-freezer.py
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+
+      - name: Render HTML
+        uses: quarto-dev/quarto-actions/render@v2
+        with:
+          to: html
+
+      # Detect which chapters have changed and optionally disable highlighting
+      # based on the 'no-preview-highlights' PR label
+      - name: Detect changed chapters (based on rendered files)
+        run: python3 .github/scripts/detect-changed-chapters.py
+        env:
+          HTML_DIR: ./_site
+          # Set to 'true' if PR has 'no-preview-highlights' label
+          DISABLE_PREVIEW_HIGHLIGHTS: ${{ contains(github.event.pull_request.labels.*.name, 'no-preview-highlights') }}
+
+      - name: Inject preview metadata
+        if: env.PREVIEW_SHOW_HIGHLIGHTS == 'true'
+        run: python3 .github/scripts/inject-preview-metadata.py
+
+      - name: Re-render with metadata
+        if: env.PREVIEW_SHOW_HIGHLIGHTS == 'true'
+        uses: quarto-dev/quarto-actions/render@v2
+        with:
+          to: html
+
+      - name: Collect QMD files for optional renders
+        id: optional-render-files
+        run: |
+          files=()
+          if [ -f index.qmd ]; then
+            files+=(index.qmd)
+          fi
+          if [ -d chapters ]; then
+            while IFS= read -r chapter_file; do
+              files+=("$chapter_file")
+            done < <(find chapters -maxdepth 1 -type f -name '*.qmd' | sort)
+          fi
+          if [ ${#files[@]} -eq 0 ]; then
+            echo "has_files=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          {
+            echo "files<<EOF"
+            printf '%s\n' "${files[@]}"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+          echo "has_files=true" >> "$GITHUB_OUTPUT"
+
+      - name: Render Reveal.js slides
+        if: contains(github.event.pull_request.labels.*.name, 'revealjs') && steps.optional-render-files.outputs.has_files == 'true'
+        run: |
+          while IFS= read -r file; do
+            [ -n "$file" ] || continue
+            echo "Rendering Reveal.js for $file"
+            quarto render "$file" --to revealjs
+          done <<< "${{ steps.optional-render-files.outputs.files }}"
+
+      - name: Render PDF
+        if: contains(github.event.pull_request.labels.*.name, 'pdf') && steps.optional-render-files.outputs.has_files == 'true'
+        run: |
+          while IFS= read -r file; do
+            [ -n "$file" ] || continue
+            echo "Rendering PDF for $file"
+            quarto render "$file" --to pdf
+          done <<< "${{ steps.optional-render-files.outputs.files }}"
+
+      - name: Render DOCX
+        if: contains(github.event.pull_request.labels.*.name, 'docx') && steps.optional-render-files.outputs.has_files == 'true'
+        run: |
+          while IFS= read -r file; do
+            [ -n "$file" ] || continue
+            echo "Rendering DOCX for $file"
+            quarto render "$file" --to docx
+          done <<< "${{ steps.optional-render-files.outputs.files }}"
+
+      - name: Install python-docx for DOCX comparison
+        if: contains(github.event.pull_request.labels.*.name, 'docx')
+        run: pip install python-docx
+
+      - name: Highlight HTML content changes
+        if: env.PREVIEW_SHOW_HIGHLIGHTS == 'true'
+        run: |
+          echo "Changed chapters:"
+          echo "${{ env.PREVIEW_CHANGED_CHAPTERS }}"
+          python3 .github/scripts/highlight-html-changes.py
+        env:
+          HTML_DIR: ./_site
+          PREVIEW_CHANGED_CHAPTERS: ${{ env.PREVIEW_CHANGED_CHAPTERS }}
+
+      - name: Create DOCX with tracked changes
+        if: contains(github.event.pull_request.labels.*.name, 'docx')
+        run: python3 .github/scripts/create-docx-tracked-changes.py
+        env:
+          DOCX_DIR: ./_site
+
+      - name: Add home page banner
+        run: python3 .github/scripts/add-home-banner.py
+        env:
+          HTML_DIR: ./_site
+          PREVIEW_CHANGED_CHAPTERS: ${{ env.PREVIEW_CHANGED_CHAPTERS }}
+
+      - name: Save Quarto freezer
+        uses: actions/cache/save@v6
+        with:
+          path: _freeze
+          key: ${{ runner.os }}-quarto-freezer-${{ github.event.pull_request.head.sha }}-${{ github.run_attempt }}
+
+      - name: Deploy PR Preview
+        id: preview-step
+        if: github.event_name == 'pull_request'
+        uses: rossjrw/pr-preview-action@v1
+        with:
+          source-dir: ./_site/
+          # Deploy on label changes too, not just open/reopen/synchronize
+          # The 'auto' action ignores label events, so we explicitly set 'deploy' for non-closed PRs
+          action: ${{ github.event.action == 'closed' && 'remove' || 'deploy' }}
+          preview-branch: gh-pages
+          comment: "false"
+          wait-for-pages-deployment: false
+
+      # Create sticky comment with preview link
+      # Following https://github.com/rossjrw/pr-preview-action?tab=readme-ov-file#customise-the-sticky-comment
+      - uses: marocchino/sticky-pull-request-comment@v3
+        if: steps.preview-step.outputs.deployment-action == 'deploy' && env.deployment_status == 'success'
+        with:
+          header: pr-preview
+          recreate: true
+          message: |
+              [PR Preview Action](https://github.com/rossjrw/pr-preview-action) ${{ steps.preview-step.outputs.action-version }}
+              :---:
+              | <p><img src="https://qr.rossjrw.com/?url=${{ steps.preview-step.outputs.preview-url }}" height="100" align="right" alt="QR code for preview link"></p> :rocket: View preview at <br> ${{ steps.preview-step.outputs.preview-url }} <br><br>
+              | <h6>Built to branch [`gh-pages`](${{ github.server_url }}/${{ github.repository }}/tree/gh-pages) at ${{ steps.preview-step.outputs.action-start-time }}. <br> Preview will be ready when the [GitHub Pages deployment](${{ github.server_url }}/${{ github.repository }}/deployments) is complete. <br><br> </h6>
+
+      - uses: marocchino/sticky-pull-request-comment@v3
+        if: steps.preview-step.outputs.deployment-action == 'remove' && env.deployment_status == 'success'
+        with:
+            header: pr-preview
+            recreate: true
+            message: |
+                [PR Preview Action](https://github.com/rossjrw/pr-preview-action) ${{ steps.preview-step.outputs.action-version }}
+                :---:
+                Preview removed because the pull request was closed.
+                ${{ steps.preview-step.outputs.action-start-time }}
+        

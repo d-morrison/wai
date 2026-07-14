@@ -1,0 +1,160 @@
+---
+title: "Theorem Examples"
+---
+
+This chapter demonstrates all the theorem-like environments available through the `callouty-theorem` and `custom-callout` extensions.
+
+# Theorems
+
+:::{#thm-pythagorean}
+## Pythagorean Theorem
+In a right triangle with legs of length $a$ and $b$ and hypotenuse of length $c$, we have:
+$$a^2 + b^2 = c^2$$
+:::
+
+See @thm-pythagorean for the famous Pythagorean theorem.
+
+# Lemmas
+
+:::{#lem-fundamental}
+## Fundamental Lemma
+Every non-empty subset of $\mathbb{N}$ has a smallest element.
+:::
+
+The result in @lem-fundamental is used to prove many theorems in number theory.
+
+# Corollaries
+
+:::{#cor-rational-root}
+## Rational Root Test Corollary
+If $p/q$ is a rational root of the polynomial $a_n x^n + \cdots + a_1 x + a_0$ with integer coefficients, then $p$ divides $a_0$ and $q$ divides $a_n$.
+:::
+
+@cor-rational-root follows directly from the Rational Root Theorem.
+
+# Propositions
+
+:::{#prp-triangle-inequality}
+## Triangle Inequality
+For any real numbers $x$ and $y$:
+$$|x + y| \leq |x| + |y|$$
+:::
+
+The triangle inequality (@prp-triangle-inequality) is fundamental in analysis.
+
+# Conjectures
+
+:::{#cnj-goldbach}
+## Goldbach's Conjecture
+Every even integer greater than 2 can be expressed as the sum of two prime numbers.
+:::
+
+@cnj-goldbach remains one of the oldest unsolved problems in number theory.
+
+# Definitions
+
+:::{#def-derivative}
+## Derivative
+The derivative of a function $f$ at a point $x$ is defined as:
+$$f'(x) = \lim_{h \to 0} \frac{f(x+h) - f(x)}{h}$$
+provided this limit exists.
+:::
+
+See @def-derivative for the formal definition of a derivative.
+
+# Examples
+
+:::{#exm-quadratic}
+## Solving a Quadratic Equation
+Solve $x^2 - 5x + 6 = 0$.
+
+We can factor this as $(x-2)(x-3) = 0$, so the solutions are $x = 2$ and $x = 3$.
+:::
+
+@exm-quadratic shows how to solve a simple quadratic equation.
+
+# Exercises
+
+:::{#exr-integration}
+## Integration Practice
+Compute the following integral:
+$$\int_0^1 x^2 \, dx$$
+:::
+
+Try @exr-integration to practice basic integration.
+
+# Proofs
+
+:::{.proof}
+## Proof of the Pythagorean Theorem
+
+Consider a square with side length $a+b$. We can divide this square into four right triangles and a central square with side length $c$.
+
+The area equations show:
+$$a^2 + b^2 = c^2$$
+:::
+
+:::{.proof}
+## Proof that the derivative of a constant is zero
+
+Let $f(x) = c$ for some constant $c$. Then $f'(x) = 0$.
+:::
+
+# Solutions
+
+:::{#sol-integration .solution}
+## Solution to Exercise on Integration
+
+We use the power rule for integration:
+$$\int_0^1 x^2 \, dx = \left[\frac{x^3}{3}\right]_0^1 = \frac{1}{3}$$
+:::
+
+:::{.solution}
+## Alternative Solution to Quadratic Equation
+
+For the quadratic equation, we can use the quadratic formula:
+$$x = \frac{5 \pm 1}{2}$$
+
+This gives us $x = 3$ or $x = 2$.
+:::
+
+# Remarks
+
+:::{#rem-convergence .remark}
+## Convergence Note
+The limit in @def-derivative may not exist for all functions at all points. For example, the absolute value function $|x|$ is not differentiable at $x=0$.
+:::
+
+@rem-convergence highlights an important limitation of the derivative definition.
+
+# Mixed Example with Theorem and Solution
+
+Here's an example that combines multiple theorem types:
+
+:::{#thm-mean-value}
+## Mean Value Theorem
+If $f$ is continuous on $[a,b]$ and differentiable on $(a,b)$, then there exists a point $c \in (a,b)$ such that:
+$$f'(c) = \frac{f(b) - f(a)}{b - a}$$
+:::
+
+:::{#exr-mvt-application}
+## Applying the Mean Value Theorem
+Let $f(x) = x^2$ on $[0, 2]$. Find the value of $c$ guaranteed by the Mean Value Theorem (@thm-mean-value).
+:::
+
+:::{#sol-mvt-application .solution}
+## Solution to Mean Value Theorem Exercise
+
+We have $f(x) = x^2$, so $f'(x) = 2x$.
+
+By the Mean Value Theorem:
+$$f'(c) = \frac{f(2) - f(0)}{2 - 0} = \frac{4 - 0}{2} = 2$$
+
+Since $f'(c) = 2c$, we need:
+$$2c = 2$$
+$$c = 1$$
+
+Therefore, $c = 1$ is the value guaranteed by the Mean Value Theorem.
+:::
+
+# References {.unnumbered}

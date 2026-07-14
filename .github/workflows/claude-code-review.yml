@@ -1,0 +1,189 @@
+# Automatic Claude Code review of pull requests.
+#
+# Runs the upstream `code-review@claude-code-plugins` plugin so we pick up
+# any improvements to the canonical review skill, then layers a
+# Quarto/R-specific addendum on top so the reviewer also catches issues
+# particular to this template repo.
+#
+# Each run posts a fresh review comment; prior reviews are left in place
+# so the PR keeps a visible history rather than a rolling sticky.
+#
+# Skips drafts, Dependabot bumps, and fork PRs (fork PRs can't read repo
+# secrets). Project guidance is in CLAUDE.md. Requires the
+# CLAUDE_CODE_OAUTH_TOKEN repository secret.
+
+name: Claude Code Review
+
+on:
+  pull_request:
+    types: [opened, synchronize, ready_for_review, reopened]
+    # Optional: Only run on specific file changes
+    # paths:
+    #   - "src/**/*.ts"
+    #   - "src/**/*.tsx"
+    #   - "src/**/*.js"
+    #   - "src/**/*.jsx"
+  # Allow claude.yml to dispatch a fresh review (e.g. after an @claude run
+  # pushes commits, or on an `@claude review` comment). GITHUB_TOKEN pushes
+  # don't fire `synchronize`, so an explicit dispatch path is needed.
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: 'Pull request number to review'
+        required: true
+        type: number
+
+# Serialize reviews per PR: a newer push cancels the in-progress review
+# of the now-stale diff so only the freshest review runs (and posts a
+# comment). Plain `cancel-in-progress: true` is safe here — unlike the
+# rme review workflow, this one is read-only (its allowedTools below
+# grant no git push / commit), so it never pushes a fix and therefore
+# can't trigger the self-cancellation that rme had to guard against
+# with a conditional expression (see d-morrison/rme#817). The
+# `|| inputs.pr_number` keeps a workflow_dispatch review in the same
+# group as the PR's pull_request reviews so they dedupe.
+concurrency:
+  group: claude-review-${{ github.event.pull_request.number || inputs.pr_number }}
+  cancel-in-progress: true
+
+jobs:
+  claude-review:
+    # workflow_dispatch is fired by claude.yml for a specific PR, so always
+    # run it — this intentionally bypasses the draft guard below so a review
+    # fires on the draft PR claude.yml opens for an issue trigger (we want to
+    # review Claude's draft work early). Otherwise skip drafts, Dependabot
+    # bumps, and fork PRs (fork PRs can't read repo secrets, so
+    # CLAUDE_CODE_OAUTH_TOKEN would be empty and the run would fail with a
+    # noisy red check).
+    if: |
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.pull_request.draft == false &&
+       github.event.pull_request.user.login != 'dependabot[bot]' &&
+       github.event.pull_request.head.repo.full_name == github.repository)
+    runs-on: ubuntu-latest
+    env:
+      # Resolve the PR number once: from the pull_request event, or the
+      # workflow_dispatch input when claude.yml triggered us.
+      PR_NUMBER: ${{ github.event.pull_request.number || inputs.pr_number }}
+    permissions:
+      contents: read
+      pull-requests: write  # post review + inline comments
+      issues: read
+      id-token: write       # required by claude-code-action for the App-token
+                            # exchange it performs even with OAuth auth
+                            # (without this, the action fails with
+                            # "App token exchange failed: 401 Unauthorized")
+
+    steps:
+      # A PR that changes THIS workflow file can't be reviewed by the action:
+      # its App-token exchange requires the review workflow to match the
+      # default branch, so it 401s ("Workflow validation failed … must have
+      # identical content to the … default branch") — the action itself says
+      # this is normal and to ignore it. Rather than post a failing check,
+      # detect that case and skip the review; it runs normally once merged.
+      - name: Skip self-review when the PR edits this workflow
+        id: selfmod
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+        run: |
+          files=$(gh api "repos/$REPO/pulls/$PR_NUMBER/files" --paginate --jq '.[].filename' 2>/dev/null || true)
+          if printf '%s\n' "$files" | grep -qx '.github/workflows/claude-code-review.yml'; then
+            echo "self_mod=true" >> "$GITHUB_OUTPUT"
+            echo "::notice::PR #$PR_NUMBER edits claude-code-review.yml — skipping self-review (the action 401s on workflow validation until merged; it runs after merge)."
+          else
+            echo "self_mod=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 1
+          submodules: recursive
+
+      - name: Claude PR review
+        if: steps.selfmod.outputs.self_mod != 'true'
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          # When claude.yml routes an `@claude review` comment here, it
+          # dispatches this workflow via `gh workflow run`, so the run's
+          # actor is github-actions[bot]. A `claude` remote session pushing
+          # a commit to a PR fires `synchronize` with the `claude` bot as
+          # actor. Without allowing these bots the action aborts with
+          # "Workflow initiated by non-human actor" and posts no review. The
+          # job `if:` already restricts runs to same-repo, non-Dependabot
+          # PRs, so accepting these bots here is safe.
+          allowed_bots: "github-actions[bot],claude"
+          plugin_marketplaces: 'https://github.com/anthropics/claude-code.git'
+          # `claude-code-plugins` is a branch name, not a version tag.
+          # Intentionally unpinned so we pick up future improvements to the
+          # upstream code-review skill; pin to a tag if reviews ever start
+          # changing in surprising ways.
+          plugins: 'code-review@claude-code-plugins'
+          # track_progress forces tag mode (guaranteed tracking comment),
+          # but the action rejects it for workflow_dispatch events
+          # ("track_progress is only supported for events: pull_request,
+          # issues, ..."). Gate on event_name: tag mode for pull_request,
+          # agent mode for dispatched runs. (See d-morrison/rme#818.)
+          track_progress: ${{ github.event_name == 'pull_request' && 'true' || 'false' }}
+          prompt: |
+            /code-review:code-review ${{ github.repository }}/pull/${{ env.PR_NUMBER }}
+
+            In addition to the standard checks above, this is the qwt Quarto
+            website template — small, prose-heavy, and re-used as a template
+            for downstream books — so also prioritize:
+
+            1. **Quarto / prose correctness**
+               - `.qmd` syntax: chunk options use `#|` directives, fenced
+                 blocks are balanced, cross-refs (`@fig-`, `@tbl-`, `@sec-`)
+                 resolve to defined labels.
+               - Bullet-list rule: 3+ items use bullets with a blank line above.
+               - `code-fold: true` is used on chunks where the output (not the
+                 code) is the point, and avoided on tutorial code.
+
+            2. **R code**
+               - Conforms to `.lintr.R` settings (snake_case, line length, etc.).
+               - No new package dependencies without justification — every
+                 dependency added here lands in every downstream book.
+
+            3. **Build hygiene**
+               - No accidental commits of `_site/`, `_freeze/`, or `.quarto/`.
+               - `README.md` is generated; edits should go to `README.Rmd`.
+               - Bibliography entries in `references.bib` are well-formed BibTeX.
+
+            4. **CI / template impact**
+               - Workflow changes don't break the `copilot-setup-steps.yml`
+                 contract or the publish/preview pipelines.
+               - Spell-check / link-check failures are fixed at the source
+                 (wordlist or content) rather than suppressed.
+
+            **Post line-specific findings as inline review comments** anchored
+            to the relevant line(s) — use the inline-comment tool, not a prose
+            list in the summary. Reserve the top-level summary comment for a
+            brief overall verdict plus any finding not tied to a specific line;
+            don't restate each inline comment there. Skip generic praise — be
+            concrete. If the PR looks clean, say so briefly.
+
+            When you post findings, end the top-level summary with a
+            ready-to-paste draft of the PR comment the author would send to
+            kick off another `@claude` run on those findings. Wrap the
+            draft in a fenced code block (GitHub renders a copy button on
+            code blocks, so one click puts it on the clipboard) and embed
+            a markdown link back to your review summary so the next
+            `@claude` run can find it. The draft should read like:
+
+                ```
+                @claude address review comments in [this review](https://github.com/${{ github.repository }}/pull/${{ env.PR_NUMBER }})
+                ```
+
+            Use the PR conversation URL above as the link target (you
+            won't know your own summary comment's anchor before posting
+            it, and the PR conversation is where the latest review lands
+            anyway). Omit this draft when the PR is clean (nothing to fix).
+
+          # `gh pr comment` is narrowed to `create` so the reviewer can post
+          # a top-level summary but can't edit or delete prior review
+          # comments (each run leaves a fresh comment; history stays).
+          claude_args: |
+            --allowedTools "mcp__github_inline_comment__create_inline_comment,Bash(gh pr view:*),Bash(gh pr diff:*),Bash(gh pr comment create:*)"

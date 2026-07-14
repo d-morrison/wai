@@ -1,0 +1,26 @@
+# Keep git submodules and pinned GitHub Actions up to date automatically.
+#
+# This template embeds the shared `macros` repo as a git submodule. Dependabot's
+# `gitsubmodule` updater opens a PR whenever a submodule's default branch
+# (currently `main`) advances, so neither this template nor the books generated
+# from it have to bump the pointer by hand. See the ADR at d-morrison/macros
+# (docs/adr/0001-macros-submodule-versioning.md) for why we track `main` rather
+# than a pinned release tag.
+version: 2
+updates:
+  - package-ecosystem: "gitsubmodule"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    commit-message:
+      prefix: "chore(submodule)"
+
+  # Also keep pinned GitHub Actions current. Dependabot scans .github/workflows/
+  # and opens a PR when a newer release of a pinned action is available;
+  # unversioned @HEAD / @main pins are left untouched.
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    commit-message:
+      prefix: "chore(actions)"

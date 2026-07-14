@@ -1,0 +1,78 @@
+# Quarto
+/.quarto/
+/_site/
+/_freeze/
+*.pdf
+*.docx
+*.epub
+*.html
+# Source HTML partials we intentionally track (not build output).
+!qwt-reveal-toggle.html
+*_files/
+site_libs/
+
+# R
+.Rhistory
+.Rapp.history
+.RData
+.Ruserdata
+.Rproj.user/
+*-Ex.R
+/*.tar.gz
+/*.Rcheck/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Jupyter
+**/*.quarto_ipynb
+.ipynb_checkpoints
+
+# TeX (LaTeX intermediate files)
+*.tex
+*.aux
+*.log
+*.toc
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# renv files
+renv/library/
+renv/local/
+renv/cellar/
+renv/lock/
+renv/python/
+renv/sandbox/
+renv/staging/
+# Lychee link checker
+.lycheecache/
+lychee-output/

@@ -1,0 +1,78 @@
+---
+title: "Quarto Website Template"
+format:
+  html: default
+  revealjs:
+    output-file: index-slides.html
+  pdf:
+    output-file: index-handout.pdf
+  docx:
+    output-file: index.docx
+---
+
+# Welcome {.unnumbered}
+
+This is a Quarto website template that you can use to create your own website.
+
+The notes are available in multiple formats:
+
+- **HTML Website**: Navigate using the navbar for easy access to all pages
+- **RevealJS Slides**: Each chapter can generate a presentation format with `-slides.html` suffix
+- **PDF Handouts**: Each chapter can generate a PDF handout with `-handout.pdf` suffix
+- **DOCX Documents**: Each chapter can generate a Microsoft Word document with `.docx` extension
+
+## About this website
+
+This website is built with [Quarto](https://quarto.org/), an open-source scientific and technical publishing system. You can use Quarto to create books, websites, blogs, presentations, and more from markdown files.
+
+## Getting Started
+
+To use this template:
+
+1. **Update the configuration**: Edit `_quarto-website.yml` to change the website title, site URL, and navigation menu.
+
+2. **Add your content**: Create new `.qmd` files for each page and add them to the navigation menu in `_quarto-website.yml`.
+
+3. **Customize the style**: Modify `styles.css` to change the appearance of your website.
+
+4. **Add references**: Update `references.bib` with your citations.
+
+## Building the website
+
+To render the website locally:
+
+```bash
+quarto render
+```
+
+To preview the website with live reload:
+
+```bash
+quarto preview
+```
+
+The rendered output will be in the `_site/` directory, which can be published to GitHub Pages.
+
+## Publishing to GitHub Pages
+
+This template includes a GitHub Actions workflow that automatically builds and publishes your website to GitHub Pages when you push to the main branch.
+
+To enable GitHub Pages:
+
+1. Go to your repository settings
+2. Navigate to "Pages" in the left sidebar
+3. Under "Build and deployment", set Source to "GitHub Actions"
+4. Push your changes to the main branch
+5. The workflow will automatically build and deploy your website
+
+Your website will be available at `https://YOUR-USERNAME.github.io/YOUR-REPO/`
+
+## License
+
+Add your license information here.
+
+## References {.unnumbered}
+
+::: {#refs}
+:::
+

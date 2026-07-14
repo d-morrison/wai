@@ -1,0 +1,158 @@
+# GitHub Copilot Setup Steps for qwt
+#
+# This workflow configures the GitHub Copilot coding agent's environment
+# by preinstalling R, Quarto, TinyTeX, and system dependencies.
+#
+# See: https://docs.github.com/en/copilot/how-tos/use-copilot-agents/coding-agent/customize-the-agent-environment
+#
+# This workflow sets up:
+# - Quarto CLI for rendering
+# - TinyTeX for PDF output
+
+name: "Copilot Setup Steps"
+
+# This workflow has two independent invocation paths:
+#
+#  1. Copilot agent provisioning: GitHub's Copilot coding agent runs the
+#     `copilot-setup-steps` job DIRECTLY to build its environment when it
+#     starts a task. That invocation is NOT governed by the `on:` triggers
+#     below — so the `paths:` filter does not affect it. The `skip-cp-setup`
+#     label short-circuits the heavy install (checkout only) in that context,
+#     so a PR Copilot is working on can opt out of the full setup cost.
+#  2. Validation CI: the `on:` triggers below run the workflow as an ordinary
+#     job, gated to changes of THIS file so we can validate edits to it
+#     without paying the setup cost on every unrelated PR. The
+#     `labeled`/`unlabeled` types let toggling the label re-run a validation.
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - .github/workflows/copilot-setup-steps.yml
+  pull_request:
+    types: [opened, synchronize, reopened, labeled, unlabeled]
+    paths:
+      - .github/workflows/copilot-setup-steps.yml
+
+jobs:
+  # The job MUST be called `copilot-setup-steps` or it will not be picked up by Copilot.
+  copilot-setup-steps:
+    runs-on: ubuntu-latest
+    
+    # Set the permissions to the lowest permissions possible needed for your steps.
+    # Copilot will be given its own token for its operations.
+    permissions:
+      contents: read
+      pull-requests: read   # read PR labels for the skip-cp-setup check
+
+    # Timeout after 55 minutes (max is 59 for copilot-setup-steps)
+    timeout-minutes: 55
+
+    steps:
+      # Skip the heavy install when a PR carries the `skip-cp-setup` label
+      # (e.g. metadata- or workflow-only PRs). Non-PR events always run setup.
+      - name: Check if setup should be skipped
+        id: check_label
+        # Pass the expression result through env (GitHub-recommended) rather
+        # than interpolating it directly into the shell, to avoid the
+        # expression-injection anti-pattern in code that downstream books copy.
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          LABELS_CONTAIN_SKIP: ${{ contains(github.event.pull_request.labels.*.name, 'skip-cp-setup') }}
+        shell: bash
+        run: |
+          if [[ "$EVENT_NAME" != 'pull_request' ]]; then
+            echo "Not a pull request, running full setup"
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          elif [[ "$LABELS_CONTAIN_SKIP" == 'true' ]]; then
+            echo "skip-cp-setup label present, skipping setup steps"
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip-cp-setup label not present, running full setup"
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      # Checkout code - Copilot will do this automatically if we don't,
+      # but we need it for any repository-specific setup
+      - name: Checkout code
+        uses: actions/checkout@v7
+        with:
+          submodules: true
+
+      # Install system dependencies needed for this project, including:
+      #
+      # - C/C++ libraries required by R packages (libcurl, libssl, libxml2, etc.)
+      # - PDF processing tools (poppler-utils) for working with PDF documents
+      # - OCR tools (tesseract-ocr) for optical character recognition tasks
+      # - A computer algebra system (maxima) for symbolic math computations
+      # - Python pip for additional tooling
+      - name: Install system dependencies
+        if: steps.check_label.outputs.skip != 'true'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libcurl4-openssl-dev \
+            libssl-dev \
+            libxml2-dev \
+            libfontconfig1-dev \
+            libharfbuzz-dev \
+            libfribidi-dev \
+            libfreetype6-dev \
+            libpng-dev \
+            libtiff5-dev \
+            libjpeg-dev \
+            libglpk-dev \
+            poppler-utils \
+            tesseract-ocr \
+            tesseract-ocr-eng \
+            maxima \
+            python3-pip
+
+      
+      # Set up pandoc for documentation
+      - name: Set up Pandoc
+        if: steps.check_label.outputs.skip != 'true'
+        uses: r-lib/actions/setup-pandoc@v2
+
+      # Set up R using the standard GitHub Actions setup
+      # Using 'release' to get the latest R version
+      - name: Set up R
+        if: steps.check_label.outputs.skip != 'true'
+        uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: 'release'
+          use-public-rspm: true
+
+      # Install R packages needed for linting and Quarto rendering
+      - name: Install R packages
+        if: steps.check_label.outputs.skip != 'true'
+        run: |
+          install.packages(
+            c("lintr", "rmarkdown"),
+            repos = "https://packagemanager.posit.co/cran/__linux__/noble/latest"
+          )
+        shell: Rscript {0}
+      
+      # Set up Quarto - required for rendering the website
+      - name: Set up Quarto
+        if: steps.check_label.outputs.skip != 'true'
+        uses: quarto-dev/quarto-actions/setup@v2
+        with:
+          tinytex: true
+
+      # Verify development environment is properly configured
+      - name: Verify development environment
+        if: steps.check_label.outputs.skip != 'true'
+        run: |
+          echo "=== Development Environment Status ==="
+          
+          # Check R installation
+          Rscript -e 'cat("R version:", R.version.string, "\n")'
+          
+          # Verify Quarto is installed and working
+          echo ""
+          echo "=== Quarto Status ==="
+          quarto --version
+          quarto list tools
+          
+          echo ""
+          echo "Development environment setup complete!"

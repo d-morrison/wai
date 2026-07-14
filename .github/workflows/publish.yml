@@ -1,0 +1,56 @@
+on:
+  workflow_dispatch:
+  push:
+    branches: main
+
+name: Quarto Publish
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      TZ: America/Los_Angeles
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+        with:
+          submodules: recursive
+
+      - name: Set up Quarto
+        uses: quarto-dev/quarto-actions/setup@HEAD
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tinytex: true
+
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          packages: |
+            any::knitr
+            any::rmarkdown
+            any::tibble
+
+      - name: Set timezone to Pacific Time
+        run: echo "TZ=America/Los_Angeles" >> $GITHUB_ENV
+
+      - name: Render
+        uses: quarto-dev/quarto-actions/render@v2
+
+      - name: Save Quarto freezer
+        uses: actions/cache/save@v6
+        with:
+          path: _freeze
+          key: ${{ runner.os }}-quarto-freezer-${{ github.ref_name }}-${{ github.sha }}
+
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: _site/
+          clean-exclude: pr-preview/
+          force: false

@@ -1,0 +1,84 @@
+/*-- scss:rules --*/
+
+// qwt revealjs light/dark palette.
+//
+// Quarto's `revealjs:` block only accepts a scalar `theme:` (no
+// `{light, dark}` map like the HTML format), so we layer this file on top
+// of the upstream `simple` theme via `theme: [simple, styles-reveal.scss]`
+// and switch palettes at runtime by toggling `body.qwt-dark`. The toggle
+// button + persistence logic lives in `qwt-reveal-toggle.html`; the
+// "Webpage version" link injected by `revealjs-html-links.lua` reads the
+// same vars so it stays legible in both modes.
+
+:root {
+  --qwt-bg: #fff;
+  --qwt-fg: #000;
+  --qwt-heading: #000;
+  --qwt-link: #2a76dd;
+  --qwt-link-hover: #6ca0e8;
+  // 0.99 (not 1) is a deliberate carryover from reveal.js's `simple` theme:
+  // some browsers render fully-opaque selections on a different compositing
+  // path, so the upstream theme uses 0.99. We keep it for consistency.
+  --qwt-selection-bg: rgba(0, 0, 0, 0.99);
+  --qwt-selection-fg: #fff;
+  --qwt-border: rgba(0, 0, 0, 0.2);
+  --qwt-muted: rgba(0, 0, 0, 0.5);
+  --qwt-chip-bg: rgba(255, 255, 255, 0.8);
+  --qwt-chip-bg-hover: rgba(255, 255, 255, 0.98);
+}
+
+body.qwt-dark {
+  --qwt-bg: #1c1e20;
+  --qwt-fg: #f8f9fa;
+  --qwt-heading: #f8f9fa;
+  --qwt-link: #42affa;
+  --qwt-link-hover: #8dcffc;
+  --qwt-selection-bg: rgba(248, 249, 250, 0.99);
+  --qwt-selection-fg: #1c1e20;
+  --qwt-border: rgba(248, 249, 250, 0.3);
+  --qwt-muted: rgba(248, 249, 250, 0.7);
+  --qwt-chip-bg: rgba(28, 30, 32, 0.85);
+  --qwt-chip-bg-hover: rgba(28, 30, 32, 0.98);
+}
+
+.reveal-viewport,
+.reveal {
+  background-color: var(--qwt-bg);
+  color: var(--qwt-fg);
+}
+
+.reveal h1,
+.reveal h2,
+.reveal h3,
+.reveal h4,
+.reveal h5,
+.reveal h6 {
+  color: var(--qwt-heading);
+}
+
+.reveal a {
+  color: var(--qwt-link);
+
+  &:hover {
+    color: var(--qwt-link-hover);
+  }
+}
+
+.reveal ::selection {
+  background-color: var(--qwt-selection-bg);
+  color: var(--qwt-selection-fg);
+}
+
+.reveal .controls {
+  color: var(--qwt-link);
+}
+
+.reveal .progress {
+  color: var(--qwt-link);
+  background-color: var(--qwt-border);
+}
+
+.reveal .slide-number {
+  color: var(--qwt-muted);
+  background-color: transparent;
+}

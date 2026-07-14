@@ -1,0 +1,212 @@
+project:
+  type: website
+  output-dir: _site
+  render:
+    - "*.qmd"
+    - "chapters/*.qmd"
+    - "!README.md"
+    - "!appendix-document-metadata.qmd"
+    - "!references.qmd"
+    # The `macros` git submodule provides macro definitions for include/
+    # shortcode use, not standalone site pages. Don't render its .qmd files
+    # directly: macros-table.qmd uses DT::datatable() (an HTML widget) that
+    # errors when the project also renders to PDF.
+    - "!macros/"
+
+website:
+  title: "Quarto Website Template"
+  site-url: https://ucd-serg.github.io/qwt/
+  description: "A template for creating websites with Quarto"
+  # https://quarto.org/docs/websites/website-llms.html — use `llms-txt:`, not `llms:` (schema error)
+  llms-txt: true
+  page-footer:
+    center: "Built with [Quarto](https://quarto.org/)"
+  back-to-top-navigation: true
+  page-navigation: true
+  reader-mode: true
+  repo-url: https://github.com/UCD-SERG/qwt
+  repo-actions: [edit, issue, source]
+  navbar:
+    left:
+      - text: "Home"
+        href: index.qmd
+      - text: "Chapters"
+        menu:
+          - text: "Chapter 1: Introduction"
+            href: chapters/chapter1.qmd
+          - text: "Chapter 2: Advanced Topics"
+            href: chapters/chapter2.qmd
+          - text: "Theorem Examples"
+            href: chapters/theorem-examples.qmd
+    right:
+      - icon: github
+        href: https://github.com/UCD-SERG/qwt
+        aria-label: GitHub
+
+callouty-theorem:
+  thm:
+    override-title: false # do not have the filter set
+                          # or override a callout title
+    callout: # parameters of the wrapping callout
+             # see Quarto callout docs for details
+      type: lem  # same color as lem (royal blue); color set in custom-callout block below
+      appearance: minimal
+  lem:
+    override-title: false
+    callout:
+      type: lem
+      appearance: minimal
+  cor:
+    override-title: false
+    callout:
+      type: cor
+      appearance: minimal
+  prp:
+    override-title: false
+    callout:
+      type: prp
+      appearance: minimal
+  cnj:
+    override-title: false
+    callout:
+      type: cnj
+      appearance: minimal
+  def:
+    override-title: false
+    callout:
+      type: def
+      appearance: minimal
+  exm:
+    override-title: false
+    callout:
+      type: exm
+      appearance: minimal
+  exr:
+    override-title: false
+    callout:
+      type: exr
+      appearance: minimal
+  proof: # also support wrapping proof-like environments
+    override-title: true # override the callout title with
+                         # the proof-type label,
+                         # appending the element name when provided
+    callout:
+      type: proof
+      appearance: default
+      collapse: true
+      icon: true
+  solution:
+    override-title: true
+    callout:
+      type: solution
+      appearance: default
+      collapse: true
+      icon: false
+  remark:
+    override-title: true
+    callout:
+      type: remark
+      appearance: default
+      collapse: false
+      icon: true
+
+# Color palette for theorem/proof environments.
+# The coatless-quarto/custom-callout extension reads this block and injects
+# CSS (HTML) and LaTeX \definecolor (PDF) so each type gets a unique color.
+# Rules: no reds; thm shares lem's royal blue.
+custom-callout:
+  lem:
+    color: "#1565C0"  # royal blue (also used for thm)
+  cor:
+    color: "#00838F"  # dark cyan
+  prp:
+    color: "#827717"  # dark olive
+  cnj:
+    color: "#558B2F"  # grass green
+  def:
+    color: "#1B5E20"  # forest green (very distinct from theorem types)
+  exm:
+    color: "#6A1B9A"  # deep purple
+  exr:
+    color: "#FFA500"  # orange
+  proof:
+    color: "#37474F"  # blue-grey slate
+  solution:
+    color: "#4E342E"  # dark cocoa
+  remark:
+    color: "#AD1457"  # dark magenta
+
+format:
+  html:
+    filters:
+      - sun123zxy/callouty-theorem
+      - coatless-quarto/custom-callout
+    theme:
+      light: cosmo
+      dark: darkly
+    css: styles.css
+    toc: true
+    anchor-sections: true
+    toc-location: right
+    toc-depth: 3
+    code-fold: false
+    code-tools: true
+    code-link: true
+    highlight-style: pygments
+    lightbox: true
+    link-external-icon: true
+    embed-resources: false
+    fig-cap-location: top
+    html-math-method: mathjax
+    number-sections: true
+    number-depth: 3
+    df-print: paged
+  docx:
+    number-sections: true
+    number-depth: 3
+    df-print: tibble
+    prefer-html: true
+  revealjs:
+    output-file: "{stem}-slides.html"
+    theme: [simple, styles-reveal.scss]
+    include-in-header: qwt-reveal-toggle.html
+    slide-number: true
+    chalkboard: false
+    preview-links: auto
+    controls: true
+    transition: slide
+    background-transition: fade
+    lightbox: true
+    fig-cap-location: top
+    html-math-method: mathjax
+    smaller: true
+    number-sections: true
+    progress: true
+    incremental: false
+    df-print: paged
+    number-depth: 2
+    shift-heading-level-by: 0
+    slide-level: 2
+    scrollable: true
+    echo: true
+    margin: 0.0
+    code-fold: true
+    code-link: true
+    code-summary: "[R code]"
+    auto-stretch: true
+    fig-height: 5
+    fig-width: 7
+
+date: last-modified
+date-format: "[Last modified:] YYYY-MM-DD HH:mm:ss (z)"
+
+execute:
+  warning: false
+  message: false
+  cache: false
+  freeze: auto
+
+knitr:
+  opts_chunk:
+    collapse: true
+    comment: "#>"

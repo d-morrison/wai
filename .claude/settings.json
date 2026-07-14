@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "allow": [
+      "Bash(quarto render)",
+      "Bash(quarto render:*)",
+      "Bash(quarto preview)",
+      "Bash(quarto preview:*)",
+      "Bash(quarto check)",
+      "Bash(quarto check:*)",
+      "Bash(quarto list:*)",
+      "Bash(Rscript -e 'lintr::lint*')",
+      "Bash(Rscript -e 'devtools::check*')",
+      "Bash(Rscript -e 'devtools::document*')",
+      "Bash(Rscript -e 'pkgdown::build*')",
+      "Bash(R CMD check:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git status)",
+      "Bash(git show:*)",
+      "Bash(git submodule status)",
+      "Bash(git add:*)",
+      "Bash(git commit -m:*)",
+      "Bash(git switch:*)",
+      "Bash(git branch:*)",
+      "Bash(gh pr view:*)",
+      "Bash(gh pr diff:*)",
+      "Bash(gh pr list:*)",
+      "Bash(gh pr create:*)",
+      "Bash(gh pr edit:*)",
+      "Bash(gh issue view:*)",
+      "Bash(gh issue list:*)",
+      "Bash(gh run view:*)",
+      "Bash(gh run list:*)"
+    ],
+    "deny": [
+      "Bash(git push --force:*)",
+      "Bash(git push -f:*)",
+      "Bash(git commit --amend:*)",
+      "Bash(git commit --no-verify:*)",
+      "Bash(git branch -d:*)",
+      "Bash(git branch -D:*)",
+      "Bash(git reset --hard:*)",
+      "Bash(rm -rf:*)"
+    ]
+  }
+}

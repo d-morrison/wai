@@ -1,0 +1,40 @@
+profile:
+  default: website
+
+bibliography: references.bib
+
+editor_options:
+  chunk_output_type: console
+
+editor:
+  markdown:
+    wrap: 72
+
+execute:
+  warning: false
+  message: false
+  cache: false
+  freeze: auto
+
+filters:
+  - div-anchors
+  - slidebreak
+  - equation-anchors
+  - revealjs-level1-slide-breaks.lua
+  - revealjs-html-links.lua
+
+format:
+  pdf:
+    filters:
+      - sun123zxy/callouty-theorem
+      - coatless-quarto/custom-callout
+    include-in-header:
+      text: |
+        \usepackage{needspace}
+        \usepackage{etoolbox}
+        \AtBeginEnvironment{longtable}{\Needspace{8\baselineskip}}
+
+knitr:
+  opts_chunk:
+    collapse: true
+    comment: "#>"
