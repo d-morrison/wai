@@ -43,7 +43,7 @@ harness returns that agent's output to the parent.
 
 #### Sketching the Harness's Own Loop
 
-The [agent loop](@sec-ai-agent-program-kind) sketched earlier is really just
+The [agent loop](#sec-ai-agent-program-kind) sketched earlier is really just
 the innermost piece.
 The harness wraps a bootstrap step and a permission/dispatch layer around it:
 
