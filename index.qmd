@@ -1,5 +1,5 @@
 ---
-title: "Quarto Website Template"
+title: "Working with AI"
 format:
   html: default
   revealjs:
@@ -9,8 +9,6 @@ format:
   docx:
     output-file: index.docx
 ---
-
-# Working with AI {.unnumbered}
 
 This site collects the UCD-SERG lab's notes on working responsibly and
 effectively with AI coding assistants: what they are, how to use them, and
