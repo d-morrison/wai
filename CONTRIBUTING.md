@@ -1,4 +1,4 @@
-# Contributing to Your Quarto Book
+# Contributing to wai (Working with AI)
 
 Thank you for your interest in contributing to this book!
 
