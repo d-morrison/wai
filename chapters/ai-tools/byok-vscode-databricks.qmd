@@ -108,9 +108,9 @@ Prefer a long-lived personal access token to avoid frequent re-authentication.
 No window reload is needed;
 the extension reads the token on each request.
 
-::: {.callout-tip}
+:::: {.callout-tip}
 A quick way to tell 404 from 403:
 a 404 means the request authenticated but named a missing endpoint
 (a model-name or configuration problem),
 while a 403 means the token itself was rejected (an authentication problem).
-:::
+::::
