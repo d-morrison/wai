@@ -17,6 +17,6 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
-    uses: d-morrison/gha/.github/workflows/bump-submodule.yml@v1
+    uses: d-morrison/gha/.github/workflows/bump-submodule.yml@v2
     with:
       submodule-path: .ai-config
