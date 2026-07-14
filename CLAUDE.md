@@ -4,7 +4,7 @@ Project guidance for Claude Code (CLI, IDE, and the GitHub Action). The same con
 
 ## Project context
 
-`qwt` (Quarto Website Template) is a template repository for [Quarto](https://quarto.org/) websites maintained by the UCD-SERG lab. Downstream repos are created from this template via the GitHub "Use this template" button, so changes here propagate to new books.
+`wai` (Working with AI) is a UCD-SERG lab [Quarto](https://quarto.org/) website collecting the lab's notes on working responsibly and effectively with AI coding assistants — policies, coding agents, and the pull-request workflow. It was migrated out of the [UCD-SERG Lab Manual](https://ucd-serg.github.io/lab-manual/)'s "Working with AI" chapter, and is built from the [`qwt` (Quarto Website Template)](https://github.com/UCD-SERG/qwt). Published at <https://d-morrison.github.io/wai/>.
 
 Authoritative style guide: [UCD-SERG Lab Manual](https://ucd-serg.github.io/lab-manual/) (source: <https://github.com/UCD-SERG/lab-manual>).
 
@@ -55,6 +55,6 @@ Mirrors [`.github/copilot-instructions.md`](.github/copilot-instructions.md). Ke
 
 ## Things to avoid
 
-- Adding new top-level dependencies (R packages, Quarto extensions) without a clear reason; this is a template, so every dependency lands in every downstream book.
+- Adding new top-level dependencies (R packages, Quarto extensions) without a clear reason; keep the build lean.
 - Reformatting unrelated files.
 - Inventing URLs or citations — only use sources actually present in `references.bib` or explicitly provided.

@@ -1,32 +1,35 @@
 # Images Directory
 
-Place your images and figures in this directory.
+Figures and screenshots used by the site pages live here.
 
 ## Naming conventions
 
-Use descriptive names for your images:
-- `chapter1-workflow-diagram.png`
-- `results-plot-2024.png`
-- `methodology-flowchart.svg`
+Use descriptive, lowercase, hyphenated names that say what the image shows,
+for example:
+
+- `claude-code-cli.png`
+- `pr-preview-banner.png`
+- `agent-harness-diagram.svg`
 
 ## Supported formats
 
 Quarto supports various image formats:
+
 - PNG (`.png`)
 - JPEG (`.jpg`, `.jpeg`)
 - SVG (`.svg`)
 - GIF (`.gif`)
-- PDF (`.pdf`) - for LaTeX/PDF output
+- PDF (`.pdf`) — for LaTeX/PDF output
 
 ## Referencing images
 
-In your `.qmd` files, reference images like this:
+In a `.qmd` file, reference an image like this:
 
 ```markdown
 ![Caption describing the image](images/your-image.png){#fig-label}
 ```
 
-Then you can cross-reference it in text:
+Then cross-reference it in the text:
 
 ```markdown
 As shown in @fig-label, ...
