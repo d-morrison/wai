@@ -4,7 +4,7 @@ Code
 
 Published
 
-Last modified: 2026-07-14 12:12:26 (PDT)
+Last modified: 2026-07-14 12:22:21 (PDT)
 
 We recommend working with **[AI coding agents](https://github.com/features/copilot/agents)** to [help you code](https://en.wikipedia.org/wiki/AI-assisted_software_development).
 
@@ -119,7 +119,7 @@ You are a meticulous code reviewer. Focus on correctness,
 security, and idiomatic style.
 ```
 
-The front matter is parsed as structured configuration (name, description, allowed tools, model); the markdown body below it becomes that agent’s system prompt, verbatim. An [Agent Skill’s](@sec-ai-agent-skills) `SKILL.md` follows the same shape: front matter for discovery metadata, a markdown body for instructions, and an optional folder of bundled scripts or reference files alongside it. No compilation step is involved; the harness reads the file and uses it directly.
+The front matter is parsed as structured configuration (name, description, allowed tools, model); the markdown body below it becomes that agent’s system prompt, verbatim. An [Agent Skill’s](#sec-ai-agent-skills) `SKILL.md` follows the same shape: front matter for discovery metadata, a markdown body for instructions, and an optional folder of bundled scripts or reference files alongside it. No compilation step is involved; the harness reads the file and uses it directly.
 
 #### Tools Are a Schema Paired with a Handler
 
@@ -195,7 +195,7 @@ The relationship between a harness and an agent is closer to an **[interpreter](
 
 #### Sketching the Harness’s Own Loop
 
-The [agent loop](@sec-ai-agent-program-kind) sketched earlier is really just the innermost piece. The harness wraps a bootstrap step and a permission/dispatch layer around it:
+The [agent loop](#sec-ai-agent-program-kind) sketched earlier is really just the innermost piece. The harness wraps a bootstrap step and a permission/dispatch layer around it:
 
 ``` python
 def run_harness():
@@ -1744,7 +1744,7 @@ Card, Orson Scott. 1985. *Ender’s Game*. Novel; Tor Books. <https://en.wikiped
 
 Flight of the Conchords. 2007. *The Humans Are Dead*. Music Video. <https://www.youtube.com/watch?v=B1BdQcJ2ZYY>.
 
-Herbert, Frank. 1965. *Dune*. Novel. <https://en.wikipedia.org/wiki/Organizations_of_the_Dune_universe#Thinking_machines>.
+Herbert, Frank. 1965. *Dune*. Novel; Chilton Books. <https://en.wikipedia.org/wiki/Organizations_of_the_Dune_universe#Thinking_machines>.
 
 LeCun, Yann. 2022. *A Path Towards Autonomous Machine Intelligence*. Meta AI Research; New York University; Technical Report. <https://openreview.net/forum?id=BZ5a1r-kVsf>.
 
