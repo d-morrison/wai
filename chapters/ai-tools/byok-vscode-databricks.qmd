@@ -1,0 +1,116 @@
+
+VS Code's built-in Chat usually talks to GitHub's hosted models.
+It can also route requests to a model provider of your own;
+GitHub calls this "bring your own key" (BYOK).
+The lab uses BYOK to reach Databricks model serving endpoints,
+which expose an OpenAI-compatible API,
+through the community extension
+[`oai-compatible-copilot`](https://marketplace.visualstudio.com/items?itemName=johnny-zhao.oai-compatible-copilot).
+
+This section describes the wiring and three errors you are likely to hit.
+
+#### Wiring the extension to Databricks
+
+Databricks serves models over an OpenAI-compatible endpoint at
+`https://<workspace>.cloud.databricks.com/serving-endpoints`.
+Point the extension at it in VS Code `settings.json`:
+
+```json
+"oaicopilot.baseUrl": "https://<workspace>.cloud.databricks.com/serving-endpoints",
+"oaicopilot.models": [
+  {
+    "id": "databricks-claude-sonnet-4-6",
+    "owned_by": "databricks",
+    "apiMode": "openai"
+  }
+]
+```
+
+The `id` of each model must exactly match the name of a deployed serving
+endpoint in your workspace.
+The extension sends `id` as the OpenAI `model` field,
+and Databricks routes `POST /serving-endpoints/chat/completions`
+to the endpoint of that name.
+An `id` that names no real endpoint fails (see the 404 below).
+
+To store your token,
+run **Set OAI Compatible Multi-Provider Apikey** from the Command Palette
+(`Cmd+Shift+P` / `Ctrl+Shift+P`),
+choose the `databricks` provider,
+and paste a Databricks personal access token.
+The extension keeps it in VS Code's encrypted secret storage
+(under `oaicopilot.apiKey.databricks`)
+and sends it as an `Authorization: Bearer` header.
+
+#### Three errors, and why they stack
+
+These failures sit on top of each other:
+fixing one uncovers the next,
+so work through them top-down.
+
+**1. "No utility model is configured for 'copilot-utility-small'"**
+
+When your main Chat model is a BYOK model,
+VS Code still needs a small "utility" model for background chores
+such as generating the conversation title and naming git branches.
+If none is configured, Chat fails before it ever reaches your provider:
+
+```
+No utility model is configured for 'copilot-utility-small'
+while the selected main agent model is BYOK.
+```
+
+Set `chat.byokUtilityModelDefault` in `settings.json`:
+
+- `"mainAgent"`: reuse your BYOK main model for these chores.
+  This keeps all traffic on your provider and needs no extra endpoint,
+  so it is the simplest choice.
+- `"copilot"`: use GitHub's hosted utility model.
+  This needs an active Copilot subscription.
+- `"none"`: the default, which errors on purpose.
+
+This requirement arrived in a mid-2026 VS Code update.
+Before that, BYOK chat worked without the setting,
+so an editor update can make a working setup start failing here.
+
+**2. `[404] ENDPOINT_NOT_FOUND`**
+
+```
+[404] Not Found
+{"error_code":"ENDPOINT_NOT_FOUND",
+ "message":"The given endpoint does not exist, please retry after
+            checking the specified model and version deployment exists."}
+```
+
+The `model` name in the request is not a serving endpoint that exists in the
+workspace.
+Check that every `id` in `oaicopilot.models` matches a real, deployed endpoint
+(Databricks workspace → **Serving**),
+and remove or rename any entry that points at a name with no deployment.
+A stray placeholder entry, such as a leftover `copilot-utility-small`,
+is a common cause.
+
+**3. `[403] Invalid access token`**
+
+```
+[403] Forbidden
+{"error_code":403,"message":"Invalid access token."}
+```
+
+The stored token is expired or revoked.
+Databricks OAuth tokens are short-lived and can expire within the day,
+so a session that worked in the morning can start returning 403 by afternoon;
+personal access tokens last until their configured expiry.
+Generate a fresh token
+(Databricks → **Settings** → **Developer** → **Access tokens**)
+and re-run **Set OAI Compatible Multi-Provider Apikey**.
+Prefer a long-lived personal access token to avoid frequent re-authentication.
+No window reload is needed;
+the extension reads the token on each request.
+
+::: {.callout-tip}
+A quick way to tell 404 from 403:
+a 404 means the request authenticated but named a missing endpoint
+(a model-name or configuration problem),
+while a 403 means the token itself was rejected (an authentication problem).
+:::
