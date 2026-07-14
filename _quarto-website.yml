@@ -12,11 +12,16 @@ project:
     # directly: macros-table.qmd uses DT::datatable() (an HTML widget) that
     # errors when the project also renders to PDF.
     - "!macros/"
+    # chapters/ai-tools/*.qmd are {{< include >}} fragments transcluded by
+    # chapters/*.qmd, not standalone pages. Their `@sec-ai-*` crossrefs are
+    # only defined on the including page, so rendering them standalone also
+    # produces broken crossref warnings.
+    - "!chapters/ai-tools/"
 
 website:
-  title: "Quarto Website Template"
-  site-url: https://ucd-serg.github.io/qwt/
-  description: "A template for creating websites with Quarto"
+  title: "Working with AI"
+  site-url: https://d-morrison.github.io/wai/
+  description: "UCD-SERG lab notes on working with AI coding assistants: policies, coding agents, and PR workflow"
   # https://quarto.org/docs/websites/website-llms.html — use `llms-txt:`, not `llms:` (schema error)
   llms-txt: true
   page-footer:
@@ -24,7 +29,7 @@ website:
   back-to-top-navigation: true
   page-navigation: true
   reader-mode: true
-  repo-url: https://github.com/UCD-SERG/qwt
+  repo-url: https://github.com/d-morrison/wai
   repo-actions: [edit, issue, source]
   navbar:
     left:
@@ -32,15 +37,15 @@ website:
         href: index.qmd
       - text: "Chapters"
         menu:
-          - text: "Chapter 1: Introduction"
-            href: chapters/chapter1.qmd
-          - text: "Chapter 2: Advanced Topics"
-            href: chapters/chapter2.qmd
-          - text: "Theorem Examples"
-            href: chapters/theorem-examples.qmd
+          - text: "Policies for Using AI"
+            href: chapters/ai-use-policies.qmd
+          - text: "Coding Agents"
+            href: chapters/coding-agents.qmd
+          - text: "Pull-Request Workflow with Agents"
+            href: chapters/pr-workflow-with-agents.qmd
     right:
       - icon: github
-        href: https://github.com/UCD-SERG/qwt
+        href: https://github.com/d-morrison/wai
         aria-label: GitHub
 
 callouty-theorem:
