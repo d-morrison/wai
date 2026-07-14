@@ -19,11 +19,10 @@ accept = [200, 201, 202, 203, 204, 206, 301, 302, 303, 307, 308, 403, 429]
 # Timeout per request (in seconds)
 timeout = 20
 
-# Exclude template URLs that users should replace
+# Exclude URLs that CI can't or shouldn't check
 exclude = [
-  "https://github.com/YOUR-USERNAME/.*",
-  "https://YOUR-USERNAME.github.io/.*",
-  "https://your-username.github.io/.*",
+  # This site's own Pages URL — only live after a deploy, so it 404s on PRs
+  "https://d-morrison.github.io/wai/.*",
   "http://localhost.*",
   "https://localhost.*",
   "http://127.0.0.1.*",

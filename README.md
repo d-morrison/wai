@@ -12,11 +12,11 @@ assistants: what they are, how to use them, and the policies lab members
 follow. The notes are published as a [Quarto](https://quarto.org/)
 website at <https://d-morrison.github.io/wai/>.
 
-The content was migrated out of the [UCD-SERG Lab
-Manual](https://ucd-serg.github.io/lab-manual/)’s “Working with AI”
-chapter, which had grown large enough to deserve a dedicated site. For
-the lab’s broader coding, reproducibility, and collaboration
-conventions, see the lab manual itself.
+The content was migrated out of the “Working with AI” chapter of the
+[UCD-SERG Lab Manual](https://ucd-serg.github.io/lab-manual/), which had
+grown large enough to deserve a dedicated site. For the lab’s broader
+coding, reproducibility, and collaboration conventions, see the lab
+manual itself.
 
 > **Technology in rapid evolution.** As of early 2026, AI
 > coding-assistant technology is changing extremely rapidly, and we are
