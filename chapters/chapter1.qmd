@@ -1,0 +1,71 @@
+---
+title: "Chapter 1: Introduction"
+format:
+  html: default
+  revealjs:
+    output-file: chapter1-slides.html
+  pdf:
+    output-file: chapter1-handout.pdf
+  docx:
+    output-file: chapter1.docx
+---
+
+This is the first chapter of your website. Replace this content with your own.
+
+# Section 1.1 {#sec-1.1}
+
+Add your content here.
+
+## Subsection 1.1.1
+
+You can include:
+
+- **Lists** like this one
+- *Italic* and **bold** text
+- `Code snippets`
+- Links: [Quarto Documentation](https://quarto.org/)
+
+# Section 1.2
+
+You can also include code blocks:
+
+```python
+# Example Python code
+def hello_world():
+    print("Hello, World!")
+
+hello_world()
+```
+
+Or R code:
+
+```r
+# Example R code
+library(ggplot2)
+
+ggplot(mtcars, aes(x = wt, y = mpg)) +
+  geom_point() +
+  theme_minimal()
+```
+
+# Section 1.3
+
+Include citations using `@citationkey` format, which references entries in your `references.bib` file.
+
+You can also add theorem-style divs:
+
+::: {#thm-sample .thm}
+This is a sample theorem block with an ID.
+:::
+
+I'm adding some new content here:
+
+```{r}
+1 + 1
+```
+
+
+# References {.unnumbered}
+
+::: {#refs}
+:::
