@@ -1,15 +1,17 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# qwt (<u>Q</u>uarto <u>W</u>ebsite <u>T</u>emplate)
+# wai (<u>W</u>orking with <u>AI</u>)
 
 <!-- badges: start -->
 
 <!-- badges: end -->
 
-A template repository for creating websites with
-[Quarto](https://quarto.org/). This template provides everything you
-need to quickly start writing your own website.
+UCD-SERG lab notes on working responsibly and effectively with AI
+coding assistants, published as a [Quarto](https://quarto.org/)
+website. Built from the [UCD-SERG `qwt` (Quarto Website
+Template)](https://github.com/UCD-SERG/qwt); the sections below
+document the template features this repository inherited.
 
 ## Features
 
