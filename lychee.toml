@@ -11,10 +11,7 @@ max_concurrency = 10
 user_agent = "Mozilla/5.0 (compatible; Lychee/0.15; +https://github.com/lycheeverse/lychee)"
 
 # Accept these HTTP status codes as valid
-# 403 is added because some sites block automated checkers but work for users
-# (e.g. claude.ai, chatgpt.com, help.openai.com, platform.openai.com, nytimes.com,
-# studentaffairs.ucdavis.edu)
-accept = [200, 201, 202, 203, 204, 206, 301, 302, 303, 307, 308, 403, 429]
+accept = [200, 201, 202, 203, 204, 206, 301, 302, 303, 307, 308, 429]
 
 # Timeout per request (in seconds)
 timeout = 20
