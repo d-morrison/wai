@@ -1,14 +1,22 @@
-# Quarto Website Template
+# Working with AI
 
 Code
 
 Published
 
-Last modified: 2026-07-14 12:09:22 (PDT)
+Last modified: 2026-07-15 23:18:00 (PDT)
 
-# Welcome
+This site collects the UCD-SERG lab’s notes on working responsibly and effectively with AI coding assistants: what they are, how to use them, and the policies lab members follow when using them. It was migrated out of the [UCD-SERG Lab Manual](https://ucd-serg.github.io/lab-manual/)’s “Working with AI” chapter, which had grown large enough to deserve a dedicated site. For the lab’s broader coding, reproducibility, and collaboration conventions, see the lab manual itself.
 
-This is a Quarto website template that you can use to create your own website.
+> **WARNING:**
+>
+> As of early 2026, AI coding assistant technology is changing extremely rapidly, and we are just beginning to figure out how to use these tools effectively ourselves. All information on this site should be taken with extra caution, as best practices and capabilities continue to evolve.
+
+## 1 Chapters
+
+- [**Policies for Using AI**](chapters/ai-use-policies.llms.md): responsibility for validation, disclosure, attribution, and using AI for journal articles
+- [**Coding Agents**](chapters/coding-agents.llms.md): what language models, coding agents, and harnesses are; how to work with them; benefits, hazards, and best practices; and configuring your environment
+- [**Pull-Request Workflow with Agents**](chapters/pr-workflow-with-agents.llms.md): filing issues, claiming work, and driving a pull request to a clean, mergeable state
 
 The notes are available in multiple formats:
 
@@ -17,23 +25,11 @@ The notes are available in multiple formats:
 - **PDF Handouts**: Each chapter can generate a PDF handout with `-handout.pdf` suffix
 - **DOCX Documents**: Each chapter can generate a Microsoft Word document with `.docx` extension
 
-## 0.1 About this website
+## 2 About this website
 
-This website is built with [Quarto](https://quarto.org/), an open-source scientific and technical publishing system. You can use Quarto to create books, websites, blogs, presentations, and more from markdown files.
+This website is built with [Quarto](https://quarto.org/), an open-source scientific and technical publishing system, from the [UCD-SERG `qwt` (Quarto Website Template)](https://github.com/UCD-SERG/qwt).
 
-## 0.2 Getting Started
-
-To use this template:
-
-1.  **Update the configuration**: Edit `_quarto-website.yml` to change the website title, site URL, and navigation menu.
-
-2.  **Add your content**: Create new `.qmd` files for each page and add them to the navigation menu in `_quarto-website.yml`.
-
-3.  **Customize the style**: Modify `styles.css` to change the appearance of your website.
-
-4.  **Add references**: Update `references.bib` with your citations.
-
-## 0.3 Building the website
+## 3 Building the website
 
 To render the website locally:
 
@@ -47,25 +43,11 @@ To preview the website with live reload:
 quarto preview
 ```
 
-The rendered output will be in the `_site/` directory, which can be published to GitHub Pages.
+The rendered output will be in the `_site/` directory, which is published to GitHub Pages.
 
-## 0.4 Publishing to GitHub Pages
+## 4 License
 
-This template includes a GitHub Actions workflow that automatically builds and publishes your website to GitHub Pages when you push to the main branch.
-
-To enable GitHub Pages:
-
-1.  Go to your repository settings
-2.  Navigate to “Pages” in the left sidebar
-3.  Under “Build and deployment”, set Source to “GitHub Actions”
-4.  Push your changes to the main branch
-5.  The workflow will automatically build and deploy your website
-
-Your website will be available at `https://YOUR-USERNAME.github.io/YOUR-REPO/`
-
-## 0.5 License
-
-Add your license information here.
+See [`LICENSE`](https://github.com/d-morrison/wai/blob/main/LICENSE).
 
 ## References
 

@@ -9,7 +9,7 @@
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.9.38">
 
-  <title>Quarto Website Template</title>
+  <title>Working with AI</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -319,21 +319,40 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Quarto Website Template</h1>
+  <h1 class="title">Working with AI</h1>
 
 <div class="quarto-title-authors">
 </div>
 
-  <p class="date">Last modified: 2026-07-14 12:09:22 (PDT)</p>
-</section>
-<section>
-<section id="welcome" class="title-slide slide level1 unnumbered center">
-<h1>Welcome</h1>
-
+  <p class="date">Last modified: 2026-07-15 23:18:00 (PDT)</p>
 </section>
 <section class="slide level2">
 
-<p>This is a Quarto website template that you can use to create your own website.</p>
+<p>This site collects the UCD-SERG lab’s notes on working responsibly and effectively with AI coding assistants: what they are, how to use them, and the policies lab members follow when using them. It was migrated out of the <a href="https://ucd-serg.github.io/lab-manual/">UCD-SERG Lab Manual</a>’s “Working with AI” chapter, which had grown large enough to deserve a dedicated site. For the lab’s broader coding, reproducibility, and collaboration conventions, see the lab manual itself.</p>
+<div class="callout callout-warning callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Technology in Rapid Evolution</strong></p>
+</div>
+<div class="callout-content">
+<p>As of early 2026, AI coding assistant technology is changing extremely rapidly, and we are just beginning to figure out how to use these tools effectively ourselves. All information on this site should be taken with extra caution, as best practices and capabilities continue to evolve.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="chapters" class="slide level2" data-number="1">
+<h2><span class="header-section-number">1</span> Chapters</h2>
+</section>
+<section class="slide level2">
+
+<ul>
+<li><a href="./chapters/ai-use-policies.html"><strong>Policies for Using AI</strong></a>: responsibility for validation, disclosure, attribution, and using AI for journal articles</li>
+<li><a href="./chapters/coding-agents.html"><strong>Coding Agents</strong></a>: what language models, coding agents, and harnesses are; how to work with them; benefits, hazards, and best practices; and configuring your environment</li>
+<li><a href="./chapters/pr-workflow-with-agents.html"><strong>Pull-Request Workflow with Agents</strong></a>: filing issues, claiming work, and driving a pull request to a clean, mergeable state</li>
+</ul>
 <p>The notes are available in multiple formats:</p>
 <ul>
 <li><strong>HTML Website</strong>: Navigate using the navbar for easy access to all pages</li>
@@ -342,28 +361,15 @@
 <li><strong>DOCX Documents</strong>: Each chapter can generate a Microsoft Word document with <code>.docx</code> extension</li>
 </ul>
 </section>
-<section id="about-this-website" class="slide level2" data-number="0.1">
-<h2><span class="header-section-number">0.1</span> About this website</h2>
+<section id="about-this-website" class="slide level2" data-number="2">
+<h2><span class="header-section-number">2</span> About this website</h2>
 </section>
 <section class="slide level2">
 
-<p>This website is built with <a href="https://quarto.org/">Quarto</a>, an open-source scientific and technical publishing system. You can use Quarto to create books, websites, blogs, presentations, and more from markdown files.</p>
+<p>This website is built with <a href="https://quarto.org/">Quarto</a>, an open-source scientific and technical publishing system, from the <a href="https://github.com/UCD-SERG/qwt">UCD-SERG <code>qwt</code> (Quarto Website Template)</a>.</p>
 </section>
-<section id="getting-started" class="slide level2" data-number="0.2">
-<h2><span class="header-section-number">0.2</span> Getting Started</h2>
-</section>
-<section class="slide level2 scrollable">
-
-<p>To use this template:</p>
-<ol type="1">
-<li><p><strong>Update the configuration</strong>: Edit <code>_quarto-website.yml</code> to change the website title, site URL, and navigation menu.</p></li>
-<li><p><strong>Add your content</strong>: Create new <code>.qmd</code> files for each page and add them to the navigation menu in <code>_quarto-website.yml</code>.</p></li>
-<li><p><strong>Customize the style</strong>: Modify <code>styles.css</code> to change the appearance of your website.</p></li>
-<li><p><strong>Add references</strong>: Update <code>references.bib</code> with your citations.</p></li>
-</ol>
-</section>
-<section id="building-the-website" class="slide level2" data-number="0.3">
-<h2><span class="header-section-number">0.3</span> Building the website</h2>
+<section id="building-the-website" class="slide level2" data-number="3">
+<h2><span class="header-section-number">3</span> Building the website</h2>
 </section>
 <section class="slide level2">
 
@@ -371,30 +377,14 @@
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a></a><span class="ex">quarto</span> render</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>To preview the website with live reload:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a></a><span class="ex">quarto</span> preview</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>The rendered output will be in the <code>_site/</code> directory, which can be published to GitHub Pages.</p>
+<p>The rendered output will be in the <code>_site/</code> directory, which is published to GitHub Pages.</p>
 </section>
-<section id="publishing-to-github-pages" class="slide level2" data-number="0.4">
-<h2><span class="header-section-number">0.4</span> Publishing to GitHub Pages</h2>
-</section>
-<section class="slide level2 scrollable">
-
-<p>This template includes a GitHub Actions workflow that automatically builds and publishes your website to GitHub Pages when you push to the main branch.</p>
-<p>To enable GitHub Pages:</p>
-<ol type="1">
-<li>Go to your repository settings</li>
-<li>Navigate to “Pages” in the left sidebar</li>
-<li>Under “Build and deployment”, set Source to “GitHub Actions”</li>
-<li>Push your changes to the main branch</li>
-<li>The workflow will automatically build and deploy your website</li>
-</ol>
-<p>Your website will be available at <code>https://YOUR-USERNAME.github.io/YOUR-REPO/</code></p>
-</section>
-<section id="license" class="slide level2" data-number="0.5">
-<h2><span class="header-section-number">0.5</span> License</h2>
+<section id="license" class="slide level2" data-number="4">
+<h2><span class="header-section-number">4</span> License</h2>
 </section>
 <section class="slide level2">
 
-<p>Add your license information here.</p>
+<p>See <a href="https://github.com/d-morrison/wai/blob/main/LICENSE"><code>LICENSE</code></a>.</p>
 </section>
 <section id="references" class="slide level2 unnumbered">
 <h2>References</h2>
@@ -596,7 +586,7 @@ window.addEventListener("load", alignEquationAnchorsWithDefault);
 })();
 </script>
 
-</section></section>
+</section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">
@@ -882,7 +872,7 @@ window.addEventListener("load", alignEquationAnchorsWithDefault);
         }
           var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
           var mailtoRegex = new RegExp(/^mailto:/);
-            var filterRegex = new RegExp("https:\/\/ucd-serg\.github\.io\/qwt\/");
+            var filterRegex = new RegExp("https:\/\/d-morrison\.github\.io\/wai\/");
           var isInternal = (href) => {
               return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
           }

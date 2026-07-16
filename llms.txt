@@ -1,10 +1,10 @@
-# Quarto Website Template
+# Working with AI
 
-> A template for creating websites with Quarto
+> UCD-SERG lab notes on working with AI coding assistants: policies, coding agents, and PR workflow
 
 ## Pages
 
-- [Quarto Website Template](https://ucd-serg.github.io/qwt/index.llms.md)
-- [Chapter 2: Advanced Topics](https://ucd-serg.github.io/qwt/chapters/chapter2.llms.md)
-- [Chapter 1: Introduction](https://ucd-serg.github.io/qwt/chapters/chapter1.llms.md)
-- [Theorem Examples](https://ucd-serg.github.io/qwt/chapters/theorem-examples.llms.md)
+- [Working with AI](https://d-morrison.github.io/wai/index.llms.md)
+- [Coding Agents](https://d-morrison.github.io/wai/chapters/coding-agents.llms.md)
+- [Policies for Using AI](https://d-morrison.github.io/wai/chapters/ai-use-policies.llms.md)
+- [Pull-Request Workflow with Agents](https://d-morrison.github.io/wai/chapters/pr-workflow-with-agents.llms.md)

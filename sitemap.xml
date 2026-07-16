@@ -1,35 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://ucd-serg.github.io/qwt/index.html</loc>
-    <lastmod>2026-07-14T19:09:22.176Z</lastmod>
+    <loc>https://d-morrison.github.io/wai/index.html</loc>
+    <lastmod>2026-07-16T06:18:00.486Z</lastmod>
   </url>
   <url>
-    <loc>https://ucd-serg.github.io/qwt/index-slides.html</loc>
-    <lastmod>2026-07-14T19:09:22.176Z</lastmod>
+    <loc>https://d-morrison.github.io/wai/index-slides.html</loc>
+    <lastmod>2026-07-16T06:18:00.486Z</lastmod>
   </url>
   <url>
-    <loc>https://ucd-serg.github.io/qwt/chapters/chapter2.html</loc>
-    <lastmod>2026-07-14T19:09:22.176Z</lastmod>
+    <loc>https://d-morrison.github.io/wai/chapters/coding-agents.html</loc>
+    <lastmod>2026-07-16T06:18:00.486Z</lastmod>
   </url>
   <url>
-    <loc>https://ucd-serg.github.io/qwt/chapters/chapter2-slides.html</loc>
-    <lastmod>2026-07-14T19:09:22.176Z</lastmod>
+    <loc>https://d-morrison.github.io/wai/chapters/coding-agents-slides.html</loc>
+    <lastmod>2026-07-16T06:18:00.486Z</lastmod>
   </url>
   <url>
-    <loc>https://ucd-serg.github.io/qwt/chapters/chapter1-slides.html</loc>
-    <lastmod>2026-07-14T19:09:22.174Z</lastmod>
+    <loc>https://d-morrison.github.io/wai/chapters/ai-use-policies-slides.html</loc>
+    <lastmod>2026-07-16T06:18:00.482Z</lastmod>
   </url>
   <url>
-    <loc>https://ucd-serg.github.io/qwt/chapters/chapter1.html</loc>
-    <lastmod>2026-07-14T19:09:22.174Z</lastmod>
+    <loc>https://d-morrison.github.io/wai/chapters/ai-use-policies.html</loc>
+    <lastmod>2026-07-16T06:18:00.482Z</lastmod>
   </url>
   <url>
-    <loc>https://ucd-serg.github.io/qwt/chapters/{stem}-slides.html</loc>
-    <lastmod>2026-07-14T19:09:22.176Z</lastmod>
+    <loc>https://d-morrison.github.io/wai/chapters/pr-workflow-with-agents-slides.html</loc>
+    <lastmod>2026-07-16T06:18:00.486Z</lastmod>
   </url>
   <url>
-    <loc>https://ucd-serg.github.io/qwt/chapters/theorem-examples.html</loc>
-    <lastmod>2026-07-14T19:09:22.176Z</lastmod>
+    <loc>https://d-morrison.github.io/wai/chapters/pr-workflow-with-agents.html</loc>
+    <lastmod>2026-07-16T06:18:00.486Z</lastmod>
   </url>
 </urlset>
